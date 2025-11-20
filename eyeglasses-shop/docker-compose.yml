@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  eyeglasses-shop:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eyeglasses-shop
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    networks:
+      - eyeglasses-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  eyeglasses-network:
+    driver: bridge
