@@ -8,15 +8,33 @@ set -e  # Exit on error
 echo "🚀 Starting deployment..."
 
 # Navigate to project directory
-cd /var/www/eyeglasses-shop/eyeglasses-shop
+# This script should be run from the eyeglasses-shop directory
+# The workflow handles git pull at the repo root level
 
-# Pull latest changes (if using Git)
-if [ -d .git ]; then
-    echo "📥 Pulling latest changes..."
-    git fetch origin
-    git reset --hard origin/main
+# Check if we're in the right directory
+if [ ! -f "docker-compose.yml" ]; then
+    # Try to find the project directory
+    if [ -d "/var/www/eyeglasses-shop/eyeglasses-shop" ] && [ -f "/var/www/eyeglasses-shop/eyeglasses-shop/docker-compose.yml" ]; then
+        cd /var/www/eyeglasses-shop/eyeglasses-shop
+        echo "📂 Navigated to project directory: $(pwd)"
+    elif [ -d "eyeglasses-shop" ] && [ -f "eyeglasses-shop/docker-compose.yml" ]; then
+        cd eyeglasses-shop
+        echo "📂 Navigated to project directory: $(pwd)"
+    else
+        echo "❌ Error: Cannot find docker-compose.yml!"
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+        exit 1
+    fi
 else
-    echo "⚠️  Not a git repository, skipping git pull"
+    echo "📂 Working in project directory: $(pwd)"
+fi
+
+# Verify we're in the right place
+if [ ! -f "docker-compose.yml" ]; then
+    echo "❌ Error: docker-compose.yml not found in $(pwd)"
+    exit 1
 fi
 
 # Stop and remove old containers

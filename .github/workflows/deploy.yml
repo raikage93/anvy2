@@ -44,6 +44,7 @@ jobs:
           script: |
             cd /var/www/eyeglasses-shop
             git pull origin main
+            cd eyeglasses-shop
             chmod +x deploy.sh
             ./deploy.sh
 
