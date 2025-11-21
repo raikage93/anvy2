@@ -8,7 +8,7 @@ set -e  # Exit on error
 echo "🚀 Starting deployment..."
 
 # Navigate to project directory
-cd /var/www/eyeglasses-shop
+cd /var/www/eyeglasses-shop/eyeglasses-shop
 
 # Pull latest changes (if using Git)
 if [ -d .git ]; then
