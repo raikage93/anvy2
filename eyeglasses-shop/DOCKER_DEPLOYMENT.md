@@ -352,55 +352,20 @@ Your website should now be available at: `https://YOUR_DOMAIN.com`
 
 ## 🔄 Step 13: Create Deployment Script
 
-Create a script for easy updates:
+A deployment script (`deploy.sh`) is already included in the project. Copy it to your VPS:
 
 ```bash
-nano /var/www/eyeglasses-shop/deploy.sh
-```
-
-Add the following:
-
-```bash
-#!/bin/bash
-
-echo "🚀 Starting deployment..."
-
-# Navigate to project directory
+# If you uploaded the project, the script should already be there
 cd /var/www/eyeglasses-shop
 
-# Pull latest changes (if using Git)
-echo "📥 Pulling latest changes..."
-git pull origin main
+# Make it executable
+chmod +x deploy.sh
 
-# Stop and remove old containers
-echo "🛑 Stopping old containers..."
-docker compose down
-
-# Remove old images (optional - keeps disk space clean)
-# docker image prune -f
-
-# Rebuild image
-echo "🏗️ Building new image..."
-docker build -t eyeglasses-shop:latest .
-
-# Start new containers
-echo "🚢 Starting new containers..."
-docker compose up -d
-
-# Show status
-echo "✅ Deployment complete!"
-docker compose ps
-
-# Show logs
-echo "📋 Recent logs:"
-docker compose logs --tail=50
+# Test it
+./deploy.sh
 ```
 
-Make it executable:
-
-```bash
-chmod +x /var/www/eyeglasses-shop/deploy.sh
-```
+**Note**: For automatic deployments on every push to `main` branch, see `CI_CD_SETUP.md` for GitHub Actions CI/CD setup.
 
 ---
 
@@ -755,7 +720,7 @@ docker compose up -d
 1. ✅ Set up SSL certificate with Let's Encrypt
 2. ✅ Configure automatic backups
 3. ✅ Set up monitoring (consider installing Netdata or Grafana)
-4. ✅ Implement CI/CD pipeline (GitHub Actions, GitLab CI)
+4. ✅ **Set up CI/CD pipeline** - See `CI_CD_SETUP.md` for detailed instructions
 5. ✅ Set up domain DNS records
 
 ---
